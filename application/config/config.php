@@ -328,7 +328,8 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = '';
+$key = bin2hex("pemira2020-emir");
+$config['encryption_key'] = hex2bin($key);
 
 /*
 |--------------------------------------------------------------------------

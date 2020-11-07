@@ -1,8 +1,12 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * author Ahmad Emir Alfatah
+ */
 
 class MY_Model extends CI_Model
 {
-	protected $data = [];
+	protected $data = array();
 
 	public function __construct()
 	{
@@ -39,6 +43,14 @@ class MY_Model extends CI_Model
 		return $query->result();
 	}
 
+	public function get_random()
+	{
+		$this->db->order_by('rand()');
+		$query = $this->db->get($this->data['table_name']);
+
+		return $query->result();
+	}
+
 	public function get_by_order_limit($ref, $order, $cond = '')
 	{
 		if (is_array($cond))
@@ -65,7 +77,7 @@ class MY_Model extends CI_Model
 
 	public function get_row($cond)
 	{
-		$this->db->where($cond);
+      	$this->db->where($cond);
 		$query = $this->db->get($this->data['table_name']);
 
 		return $query->row();
@@ -122,21 +134,21 @@ class MY_Model extends CI_Model
 		return $query->result();
 	}
 
-	public function getDataJoin($tables, $jcond)
+	public function getDataJoin($tables, $jcond, $where = '')
 	{
 		$this->db->select('*');
 		for ($i = 0; $i < count($tables); $i++)
 			$this->db->join($tables[$i], $jcond[$i]);
+		if($where != '') { $this->db->where($where); }
 		return $this->db->get($this->data['table_name'])->result();
 	}
 
-	public function get_join_where($tables, $jcond, $where)
+	public function getDataJoinWhere($tables, $jcond, $where)
 	{
 		$this->db->select('*');
-		$this->db->where($where);
 		for ($i = 0; $i < count($tables); $i++)
 			$this->db->join($tables[$i], $jcond[$i]);
-		return $this->db->get($this->data['table_name'])->row();
+		return $this->db->get($this->data['table_name'],$where)->row();
 	}
 
 	public function get_join_all_where($tables, $jcond, $where)
@@ -181,14 +193,14 @@ class MY_Model extends CI_Model
 
 	public function required_input($input_names)
 	{
-		$rules = [];
+		$rules = array();
 		foreach ($input_names as $input)
 		{
-			$rules []= [
+			$rules []= array(
 				'field'		=> $input,
 				'label'		=> ucfirst($input),
 				'rules'		=> 'required'
-			];
+			);
 		}
 
 		return $this->validate($rules);

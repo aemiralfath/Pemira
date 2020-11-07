@@ -1,5 +1,8 @@
 <?php
-defined('BASEPATH') || exit('No direct script allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * author Ahmad Emir Alfatah
+ */
 
 class MY_Router extends CI_Router
 {
