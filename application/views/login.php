@@ -22,6 +22,12 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/responsive.css">
     <!-- modernizr css -->
     <script src="<?= base_url() ?>assets/js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <style>
+        div.alert {
+            margin: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -40,19 +46,23 @@
                 <?= form_open('login') ?>
                     <div class="login-form-head">
                         <h4>Sign In</h4>
-                        <p>Hello there, Sign in and start managing your Data</p>
+                        <?= $this->session->flashdata('msg') ?>
                     </div>
                     <div class="login-form-body">
                         <?= $this->session->flashdata('msg') ?>
                         <div class="form-gp">
+
                             <label for="InputUsername">Username</label>
                             <input type="text" id="InputUsername" name="username" required>
+                          
                             <i class="ti-user"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp">
+
                             <label for="InputPassword">Password</label>
                             <input type="password" id="InputPassword" name="password" required>
+
                             <i class="ti-lock"></i>
                             <div class="text-danger"></div>
                         </div>

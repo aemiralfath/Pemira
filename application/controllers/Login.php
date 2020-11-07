@@ -24,20 +24,18 @@ class Login extends MY_Controller {
             }
             exit;
         }
+
+        $this->load->model('user_m');
     }
     
     public function index()
     {
         if($this->POST('username') && $this->POST('password')) {
+
             if($this->user_m->cek_login(array('username' => $this->POST('username'), 'password' => $this->POST('password')))) {
                 $this->log_m->insert(array('ip_address' => $this->get_ip(), 'waktu' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta')), 'username'=>$this->POST('username')));
-                if($this->session->userdata('id_role')==101){
-                    redirect('Superadmin');
-                    exit;
-                }else if($this->session->userdata('id_role')==201){
-                    redirect('Admin');
-                    exit;
-                }
+                redirect('login');
+                exit;
             } else { 
                 echo "<script>alert('Username dan Password salah');window.location = ".json_encode(site_url('login')).";</script>";
                 exit;
