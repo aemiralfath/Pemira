@@ -28,6 +28,7 @@ class Superadmin extends MY_Controller {
 
     public function index()
     {
+        $this->data['active'] = 1;
         $this->data['title'] = 'Super Admin | ';
         $this->data['content'] = 'main';
         $this->load->view('superadmin/template/template', $this->data);
