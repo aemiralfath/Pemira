@@ -14,11 +14,13 @@ class Superadmin extends MY_Controller {
         {
             if($this->data['id_role'] != 101) {
                 $this->session->sess_destroy();
+                $this->flashmsg("Kamu harus login dulu", "warning");
                 redirect('login');
                 exit;
             }
         } else {
             $this->session->sess_destroy();
+            $this->flashmsg("Kamu harus login dulu", "warning");
             redirect('login');
             exit;
         }
@@ -26,7 +28,9 @@ class Superadmin extends MY_Controller {
 
     public function index()
     {
-        
+        $this->data['title'] = 'Super Admin | ';
+        $this->data['content'] = 'main';
+        $this->load->view('superadmin/template/template', $this->data);
     }
 
 }
