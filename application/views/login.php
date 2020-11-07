@@ -49,15 +49,20 @@
                         <?= $this->session->flashdata('msg') ?>
                     </div>
                     <div class="login-form-body">
+                        <?= $this->session->flashdata('msg') ?>
                         <div class="form-gp">
-                            <label for="exampleInputEmail1">Username</label>
-                            <input type="text" name="username" id="exampleInputEmail1" required>
+
+                            <label for="InputUsername">Username</label>
+                            <input type="text" id="InputUsername" name="username" required>
+                          
                             <i class="ti-user"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" name="password" id="exampleInputPassword1" required>
+
+                            <label for="InputPassword">Password</label>
+                            <input type="password" id="InputPassword" name="password" required>
+
                             <i class="ti-lock"></i>
                             <div class="text-danger"></div>
                         </div>

@@ -10,7 +10,7 @@ class Admin extends MY_Controller {
         $this->load->library('encryption');
         $this->data['username'] = $this->session->userdata('username');
         $this->data['id_role']  = $this->session->userdata('id_role');
-        if(!isset($this->data['username']) || $this->data['id_role'] != 1)
+        if(!isset($this->data['username']) || $this->data['id_role'] != 201)
         {
             $this->session->unset_userdata('username');
             $this->session->unset_userdata('id_role');
