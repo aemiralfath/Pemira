@@ -49,6 +49,25 @@ class Superadmin extends MY_Controller {
         $this->data['content'] = 'daftar-admin';
         $this->load->view('superadmin/template/template', $this->data);
     }
+    
+    public function tambah_admin()
+    {
+        $data = [
+            'username' => $this->POST('username'),
+            'password' => md5($this->POST('password')),
+            'role' => 201
+        ];
+
+        $cek = $this->user_m->insert($data);
+
+        if($cek) {
+            $this->flashmsg('Berhasil Menambah Admin');
+        } else {
+            $this->flashmsg('Gagal Menambah Admin', 'danger');
+        }
+
+        redirect('superadmin/daftar-admin');
+    }
 
     public function daftar_pemilih($id = 1)
     {
