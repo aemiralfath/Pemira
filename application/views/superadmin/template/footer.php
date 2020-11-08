@@ -225,6 +225,30 @@
     <!-- others plugins -->
     <script src="<?= base_url() ?>assets/js/plugins.js"></script>
     <script src="<?= base_url() ?>assets/js/scripts.js"></script>
+    <?php if($content == "daftar-pemilih") { ?>
+    
+    <script>
+        $(document).ready(function() {
+            var tbdata = $('#tbdata').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                //'searching': false, // Remove default Search Control
+                'ajax': {
+                    'url':'<?=base_url()?>/superadmin/listPemilih'
+                },
+                'columns': [
+                    { data: 'nim' },
+                    { data: 'nama' },
+                    { data: 'jk' },
+                    { data: 'jurusan' },
+                    { data: 'angkatan' },
+                ]
+            });
+        });
+    </script>
+
+    <?php } ?>
 </body>
 
 </html>

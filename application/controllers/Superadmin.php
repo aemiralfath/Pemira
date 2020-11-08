@@ -48,6 +48,23 @@ class Superadmin extends MY_Controller {
         $this->load->view('superadmin/template/template', $this->data);
     }
 
+    public function daftar_pemilih()
+    {
+        $this->data['active'] = 3;
+        $this->data['title'] = 'Super Admin | ';
+        $this->data['content'] = 'daftar-pemilih';
+        $this->load->view('superadmin/template/template', $this->data);
+    }
+
+    public function listPemilih()
+    {
+        $postData = $this->input->post();
+
+        $data = $this->pemilih_m->getPemilih($postData);
+
+        echo json_encode($data);
+    }
+
 }
 
 /* End of file Superadmin.php */
