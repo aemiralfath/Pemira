@@ -16,6 +16,7 @@
                                     <td class="p-2">NIM</td>
                                     <td>:</td>
                                     <td class="p-2"><?= $pemilih->nim ?></td>
+                                    <input type="hidden" id="nim" value="<?= $pemilih->nim ?>">
                                 </tr>
                                 <tr>
                                     <td class="p-2">Nama</td>
@@ -49,10 +50,10 @@
                             <div class="input-group mb-3">
                                 <input type="text" id="code" placeholder="Generate Code" class="form-control" aria-label="Text input with dropdown button">
                                 <div class="input-group-append">
-                                    <button id="copyCode" class="btn btn-dark" type="button"><i class="fa fa-qrcode"></i></button>
+                                    <button id="generateCode" class="btn btn-dark" type="button"><i class="fa fa-qrcode"></i></button>
                                 </div>
                             </div>
-                            <button class="btn btn-outline-dark btn-xs w-100">COPY CODE</button>
+                            <button id="copyCode" class="btn btn-outline-dark btn-xs w-100">COPY CODE</button>
                         </div>
                     </div>
 

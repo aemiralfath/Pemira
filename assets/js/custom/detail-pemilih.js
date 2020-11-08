@@ -1,8 +1,7 @@
 var currUrl = window.location.href.split('/');
 currUrl.pop();
+currUrl.pop();
 var globalUrl = currUrl.join('/');
-
-console.log(globalUrl);
 
 $('#copyCode').click(function() {
     $('#code').select();
@@ -17,17 +16,16 @@ $('#copyLink').click(function() {
 });
 
 $('#generateCode').click(function(){
-        var nim_user = $('#nim').val();
-        $.ajax({
-            type: 'POST',
-            url: globalUrl+'/generateCode',
-            dataType: 'JSON',
-            data: {nim:nim_user},
-            success: function(data) {
-                if(data.status == 'success') {
-                    $('#code').val(data.key);
-                }
+    var nim_user = $('#nim').val();
+    $.ajax({
+        type: 'POST',
+        url: globalUrl+'/generateCode',
+        dataType: 'JSON',
+        data: {nim:nim_user},
+        success: function(data) {
+            if(data.status == 'success') {
+                $('#code').val(data.key);
             }
-        })
-    }
-)
+        }
+    });
+});

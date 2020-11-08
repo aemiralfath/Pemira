@@ -132,10 +132,10 @@ class Superadmin extends MY_Controller {
         }
     }
 
-    public function getData()
-    {
-        $d->type = $this->encryption->decrypt($d->type);
-    }
+    // public function getData()
+    // {
+    //     $d->type = $this->encryption->decrypt($d->type);
+    // }
 
 }
 
