@@ -111,6 +111,32 @@ class Superadmin extends MY_Controller {
         echo json_encode($data);
     }
 
+    public function generateCode() {
+        if(isset($this->data['username'])) {
+            $unique = md5(uniqid(rand(), true));
+            $key = substr($unique, strlen($unique) - 10, strlen($unique));
+            $encrypt_key = $this->encryption->encrypt($key);
+
+            $data = array(
+                'nim' => $this->POST('nim'),
+                'kode' => $encrypt_key,
+                'date_created' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta')),
+                'date_used' => null,
+                'paslon_pilihan' => 1
+            );
+            $this->konfirmasi_m->insert($data);
+
+            echo json_encode(array('key' => $key, 'status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'gagal'));
+        }
+    }
+
+    public function getData()
+    {
+        $d->type = $this->encryption->decrypt($d->type);
+    }
+
 }
 
 /* End of file Superadmin.php */

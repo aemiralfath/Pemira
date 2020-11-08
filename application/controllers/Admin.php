@@ -6,11 +6,6 @@ class Admin extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->library('encryption');
-        $this->load->model('pemilih_m');
-        $this->load->model('konfirmasi_m');
-        
         $this->data['username'] = $this->session->userdata('username');
         $this->data['id_role']  = $this->session->userdata('id_role');
         if(!isset($this->data['username']) || $this->data['id_role'] != 201)
@@ -21,8 +16,11 @@ class Admin extends MY_Controller {
             echo "<script>alert('you must login first');window.location = ".json_encode(site_url('login')).";</script>";
             exit;
         }
+        
+        $this->load->model('pemilih_m');
+        $this->load->model('konfirmasi_m');
     }
-
+    
     public function index()
     {
         $this->data['pemilih'] = $this->pemilih_m->get_num_row(['jurusan !=' => 0]);
