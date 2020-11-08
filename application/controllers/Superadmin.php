@@ -78,6 +78,21 @@ class Superadmin extends MY_Controller {
         $this->load->view('superadmin/template/template', $this->data);
     }
 
+    public function detail_pemilih($nim = null)
+    {
+        if($nim == null) {
+            redirect('superadmin/daftar-pemilih');
+            exit;
+        }
+
+        $this->data['jk'] = ['', 'Laki - laki', 'Perempuan'];
+        $this->data['pemilih'] = $this->pemilih_m->getDataJoinWhere(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], ['nim' => $nim]);
+        $this->data['active'] = 3;
+        $this->data['title'] = 'Super Admin | ';
+        $this->data['content'] = 'detail-pemilih';
+        $this->load->view('superadmin/template/template', $this->data);
+    }
+
     public function listPemilih()
     {
         $postData = $this->input->post();

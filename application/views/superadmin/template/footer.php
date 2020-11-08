@@ -289,6 +289,22 @@
         });
     </script>
     <?php } } ?>
+
+    <?php if($content == 'detail-pemilih') { ?>
+    <script>
+        $('#copyCode').click(function() {
+            $('#code').select();
+            document.execCommand('copy');
+            alert("Copied the text : "+$('#code').val());
+        });
+
+        $('#copyLink').click(function() {
+            $('#link').select();
+            document.execCommand('copy');
+            alert("Copied the text : "+$('#link').val());
+        });
+    </script>
+    <?php } ?>
 </body>
 
 </html>
