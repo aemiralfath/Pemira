@@ -242,7 +242,7 @@
                 'columns': [
                     { data: 'nim' },
                     { data: 'nama' },
-                    { data: 'jk' },
+                    { data: 'jenis_kelamin' },
                     { data: 'jurusan' },
                     { data: 'angkatan' },
                     {
@@ -273,7 +273,7 @@
                 'columns': [
                     { data: 'nim' },
                     { data: 'nama' },
-                    { data: 'jk' },
+                    { data: 'jenis_kelamin' },
                     { data: 'jurusan' },
                     { data: 'angkatan' },
                     {
