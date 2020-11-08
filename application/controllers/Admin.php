@@ -8,6 +8,9 @@ class Admin extends MY_Controller {
         parent::__construct();
         $this->load->library('session');
         $this->load->library('encryption');
+        $this->load->model('pemilih_m');
+        $this->load->model('konfirmasi_m');
+        
         $this->data['username'] = $this->session->userdata('username');
         $this->data['id_role']  = $this->session->userdata('id_role');
         if(!isset($this->data['username']) || $this->data['id_role'] != 201)
@@ -21,6 +24,17 @@ class Admin extends MY_Controller {
     }
 
     public function index()
+    {
+        $this->data['pemilih'] = $this->pemilih_m->get_num_row(['jurusan !=' => 0]);
+        $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['nim !=' => 0]);
+        $this->data['data_pemilih'] = $this->pemilih_m->getDataJoin(['jurusan'],["jurusan=id_jurusan"]);
+        $this->data['active'] = 1;
+        $this->data['title'] = 'Admin | ';
+        $this->data['content'] = 'main';
+        $this->load->view('admin/template/template', $this->data);
+    }
+
+    public function getData()
     {
         $this->load->model("applicant_m");
         $this->data['title'] = "Admin | Dashboard";
