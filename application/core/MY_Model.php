@@ -143,12 +143,13 @@ class MY_Model extends CI_Model
 		return $this->db->get($this->data['table_name'])->result();
 	}
 
-	public function getDataJoinWhere($tables, $jcond, $where)
+	public function getDataJoinWhere($tables, $jcond, $where = '')
 	{
 		$this->db->select('*');
 		for ($i = 0; $i < count($tables); $i++)
 			$this->db->join($tables[$i], $jcond[$i]);
-		return $this->db->get($this->data['table_name'],$where)->row();
+		if($where != '') { $this->db->where($where); }
+		return $this->db->get($this->data['table_name'])->row();
 	}
 
 	public function get_join_all_where($tables, $jcond, $where)

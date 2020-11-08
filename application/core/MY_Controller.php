@@ -40,7 +40,7 @@
 
         protected function flashmsg($msg, $type = 'success',$name='msg')
         {
-            return $this->session->set_flashdata($name, '<div class="alert alert-'.$type.' alert-dismissible fade show" role="alert">'.$msg.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="fa fa-times"></span></button></div>');
+            return $this->session->set_flashdata($name, '<div class="alert-dismiss"><div class="alert alert-'.$type.' alert-dismissible fade show" role="alert">'.$msg.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="fa fa-times"></span></button></div></div>');
         }
 
         protected function upload($id, $directory, $tag_name = 'userfile', $max_size = 0)
