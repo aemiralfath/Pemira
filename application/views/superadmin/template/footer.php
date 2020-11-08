@@ -1,5 +1,5 @@
     
-    <footer>
+        <footer>
             <div class="footer-area">
                 <p>© Copyright 2018. All right reserved. Template by <a href="https://colorlib.com/wp/">Colorlib</a>.</p>
             </div>
@@ -225,7 +225,8 @@
     <!-- others plugins -->
     <script src="<?= base_url() ?>assets/js/plugins.js"></script>
     <script src="<?= base_url() ?>assets/js/scripts.js"></script>
-    <?php if($content == "daftar-pemilih") { ?>
+    <?php if($content == "daftar-pemilih") { 
+        if($id == 1) {?>
     
     <script>
         $(document).ready(function() {
@@ -236,7 +237,7 @@
                 'responsive': true,
                 //'searching': false, // Remove default Search Control
                 'ajax': {
-                    'url':'<?=base_url()?>/superadmin/listPemilih'
+                    'url':'<?=base_url()?>superadmin/listPemilih'
                 },
                 'columns': [
                     { data: 'nim' },
@@ -257,7 +258,37 @@
         });
     </script>
 
-    <?php } ?>
+    <?php } else if($id == 2) {?>
+    <script>
+        $(document).ready(function() {
+            var tbdata = $('#tbdata').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'responsive': true,
+                //'searching': false, // Remove default Search Control
+                'ajax': {
+                    'url':'<?=base_url()?>superadmin/belumMemilih'
+                },
+                'columns': [
+                    { data: 'nim' },
+                    { data: 'nama' },
+                    { data: 'jk' },
+                    { data: 'jurusan' },
+                    { data: 'angkatan' },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function(data, type, full, meta) {
+                            var btn = '<a href="<?= site_url('superadmin/detail-pemilih/') ?>'+data.nim+'" class="btn btn-flat btn-outline-dark btn-xs">Detail</a>';
+                            return btn;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+    <?php } } ?>
 </body>
 
 </html>

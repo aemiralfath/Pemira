@@ -27,6 +27,7 @@ class Superadmin extends MY_Controller {
 
         $this->load->model('pemilih_m');
         $this->load->model('konfirmasi_m');
+        $this->load->model('user_m');
         
     }
 
@@ -42,14 +43,16 @@ class Superadmin extends MY_Controller {
 
     public function daftar_admin()
     {
+        $this->data['admin'] = $this->user_m->get(['role' => 201]);
         $this->data['active'] = 2;
         $this->data['title'] = 'Super Admin | ';
         $this->data['content'] = 'daftar-admin';
         $this->load->view('superadmin/template/template', $this->data);
     }
 
-    public function daftar_pemilih()
+    public function daftar_pemilih($id = 1)
     {
+        $this->data['id'] = $id;
         $this->data['active'] = 3;
         $this->data['title'] = 'Super Admin | ';
         $this->data['content'] = 'daftar-pemilih';
@@ -61,6 +64,15 @@ class Superadmin extends MY_Controller {
         $postData = $this->input->post();
 
         $data = $this->pemilih_m->getPemilih($postData);
+
+        echo json_encode($data);
+    }
+
+    public function belumMemilih()
+    {
+        $postData = $this->input->post();
+
+        $data = $this->pemilih_m->belumMemilih($postData);
 
         echo json_encode($data);
     }
