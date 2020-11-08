@@ -27,61 +27,80 @@ class Admin extends MY_Controller {
     {
         $this->data['pemilih'] = $this->pemilih_m->get_num_row(['jurusan !=' => 0]);
         $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['nim !=' => 0]);
-        $this->data['data_pemilih'] = $this->pemilih_m->getDataJoin(['jurusan'],["jurusan=id_jurusan"]);
         $this->data['active'] = 1;
         $this->data['title'] = 'Admin | ';
         $this->data['content'] = 'main';
         $this->load->view('admin/template/template', $this->data);
     }
 
+    public function daftar_pemilih($id=1)
+    {
+        $this->data['id'] = $id;
+        $this->data['active'] = 2;
+        $this->data['title'] = 'Admin | ';
+        $this->data['content'] = 'daftar-pemilih';
+        $this->load->view('admin/template/template', $this->data);
+    }
+
+    public function detail_pemilih($nim=null)
+    {
+        if($nim == null) {
+            redirect('admin/daftar-pemilih');
+            exit;
+        }
+
+        $this->data['jk'] = ['', 'Laki - laki', 'Perempuan'];
+        $this->data['pemilih'] = $this->pemilih_m->getDataJoinWhere(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], ['nim' => $nim]);
+        $this->data['active'] = 3;
+        $this->data['title'] = 'Admin | ';
+        $this->data['content'] = 'detail-pemilih';
+        $this->load->view('admin/template/template', $this->data);
+    }
+
+    public function generateCode() {
+        if(isset($this->data['username'])) {
+            $unique = md5(uniqid(rand(), true));
+            $key = substr($unique, strlen($unique) - 10, strlen($unique));
+            $encrypt_key = $this->encryption->encrypt($key);
+
+            $data = array(
+                'nim' => $this->POST('nim'),
+                'kode' => $encrypt_key,
+                'date_created' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta')),
+                'date_used' => null,
+                'paslon_pilihan' => 1
+            );
+            $this->konfirmasi_m->insert($data);
+
+            echo json_encode(array('key' => $key, 'status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'gagal'));
+        }
+    }
+
+    public function listPemilih()
+    {
+        $postData = $this->input->post();
+
+        $data = $this->pemilih_m->getPemilih($postData);
+
+        echo json_encode($data);
+    }
+
+    public function belumMemilih()
+    {
+        $postData = $this->input->post();
+
+        $data = $this->pemilih_m->belumMemilih($postData);
+
+        echo json_encode($data);
+    }
+
     public function getData()
     {
-        $this->load->model("applicant_m");
-        $this->data['title'] = "Admin | Dashboard";
-        $this->data['content'] = "table";
-        $data = $this->applicant_m->get();
-        
-        foreach($data as $d){
-            $d->name = $this->encryption->decrypt($d->name);
-            $d->birth = $this->encryption->decrypt($d->birth);
-            $d->email = $this->encryption->decrypt($d->email);
-            $d->no_telp = $this->encryption->decrypt($d->no_telp);
-            $d->university = $this->encryption->decrypt($d->university);
-            $d->major = $this->encryption->decrypt($d->major);
-            $d->semester = $this->encryption->decrypt($d->semester);
-            $d->skills = $this->encryption->decrypt($d->skills);
-            $d->organization = $this->encryption->decrypt($d->organization);
-            $d->medsos = $this->encryption->decrypt($d->medsos);
-            $d->type = $this->encryption->decrypt($d->type);
-        }
-
-        $this->data['applicant'] = $data;
-		$this->load->view('template/template', $this->data);
+        $d->type = $this->encryption->decrypt($d->type);
     }
 
-    public function send($type){
-        print_r($type);
-        if($this->POST('submit_intern')){
-            print_r($type);
-            $data = array(
-                'id' => null,
-                'name' => $this->encryption->encrypt($this->POST('nama')),
-                'email' => $this->encryption->encrypt($this->POST('email')),
-                'birth' => $this->encryption->encrypt($this->POST('ttl')),
-                'no_telp' => $this->encryption->encrypt($this->POST('tel')),
-                'university' => $this->encryption->encrypt($this->POST('universitas')),
-                'major' => $this->encryption->encrypt($this->POST('jurusan')),
-                'semester' => $this->encryption->encrypt($this->POST('semester')),
-                'organization' => $this->encryption->encrypt($this->POST('organisasi')),
-                'skills' => $this->encryption->encrypt($this->POST('skill')),
-                'medsos' => $this->encryption->encrypt($this->POST('medsos')),
-                'type' => $this->encryption->encrypt($type)
-            );
-
-            $this->applicant_m->insert($data);
-            echo "<script>alert('Data Berhasil disimpan!');window.location = ".json_encode(base_url()).";</script>";
-        }
-    }
 }
 
 /* End of file Admin.php */
