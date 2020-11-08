@@ -78,11 +78,10 @@ class Pemilih_m extends MY_Model {
   
         foreach($records as $record ){
 
-            if($record->jenis_kelamin == 1) {
-                $jk = "Laki - laki";
-            } else {
-                $jk = "Perempuan";
-            }
+            $jk = [
+                1 => "Laki - laki",
+                2 => "Perempuan"
+            ];
 
             $jurusan = [
                 1 => "TEKNIK INFORMATIKA",
@@ -102,7 +101,7 @@ class Pemilih_m extends MY_Model {
             $data[] = array( 
                 "nim"=>$record->nim,
                 "nama"=>$record->nama,
-                "jk"=>$jk,
+                "jenis_kelamin"=>$jk[$record->jenis_kelamin],
                 "jurusan"=>$jurusan[$record->jurusan],
                 "angkatan"=>$record->angkatan
             ); 
