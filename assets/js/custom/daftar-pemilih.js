@@ -22,7 +22,7 @@ $(document).ready(function() {
                 data: null,
                 orderable: false,
                 render: function(data, type, full, meta) {
-                    var btn = '<a href="'+globalUrl+'/detail-pemilih'+data.nim+'" class="btn btn-flat btn-outline-dark btn-xs">Detail</a>';
+                    var btn = '<a href="'+globalUrl+'/detail-pemilih/'+data.nim+'" class="btn btn-flat btn-outline-dark btn-xs">Detail</a>';
                     return btn;
                 }
             }
