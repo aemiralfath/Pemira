@@ -16,7 +16,7 @@ class Admin extends MY_Controller {
             echo "<script>alert('you must login first');window.location = ".json_encode(site_url('login')).";</script>";
             exit;
         }
-        
+
         $this->load->model('pemilih_m');
         $this->load->model('konfirmasi_m');
     }
@@ -66,7 +66,7 @@ class Admin extends MY_Controller {
                 'kode' => $encrypt_key,
                 'date_created' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta')),
                 'date_used' => null,
-                'paslon_pilihan' => 1
+                'paslon_pilihan' => 0
             );
             $this->konfirmasi_m->insert($data);
 
