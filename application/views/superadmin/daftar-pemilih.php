@@ -19,7 +19,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="data-tables datatable-dark display dataTable">
+                    <div class="data-tables datatable-dark table-striped">
                         <table id="tbdata" class="text-center">
                             <thead>
                                 <tr>
@@ -28,6 +28,7 @@
                                     <th>Jenis Kelamin</th>
                                     <th>Jurusan</th>
                                     <th>Angkatan</th>
+                                    <th>Opsi</th>
                                 </tr>
                             </thead>
                         </table>

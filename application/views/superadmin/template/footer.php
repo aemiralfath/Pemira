@@ -233,6 +233,7 @@
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
+                'responsive': true,
                 //'searching': false, // Remove default Search Control
                 'ajax': {
                     'url':'<?=base_url()?>/superadmin/listPemilih'
@@ -243,6 +244,14 @@
                     { data: 'jk' },
                     { data: 'jurusan' },
                     { data: 'angkatan' },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function(data, type, full, meta) {
+                            var btn = '<a href="<?= site_url('superadmin/detail-pemilih/') ?>'+data.nim+'" class="btn btn-flat btn-outline-dark btn-xs">Detail</a>';
+                            return btn;
+                        }
+                    }
                 ]
             });
         });
