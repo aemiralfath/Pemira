@@ -1,3 +1,8 @@
+var currUrl = window.location.href.split('/');
+currUrl.pop();
+currUrl.pop();
+var globalUrl = currUrl.join('/');
+
 $(document).ready(function() {
     var tbdata = $('#tbdata').DataTable({
         'processing': true,
@@ -6,7 +11,7 @@ $(document).ready(function() {
         'responsive': true,
         //'searching': false, // Remove default Search Control
         'ajax': {
-            'url':globalUrl+'/belumMemilih'
+            'url': globalUrl+'/belumMemilih'
         },
         'columns': [
             { data: 'nim' },
