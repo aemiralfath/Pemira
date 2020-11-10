@@ -34,7 +34,7 @@ class Superadmin extends MY_Controller {
     public function index()
     {
         $this->data['pemilih'] = $this->pemilih_m->get_num_row(['jurusan !=' => 0]);
-        $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['nim !=' => 0]);
+        $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['paslon_pilihan !=' => 0]);
         $this->data['active'] = 1;
         $this->data['title'] = 'Super Admin | ';
         $this->data['content'] = 'main';
@@ -67,6 +67,32 @@ class Superadmin extends MY_Controller {
         }
 
         redirect('superadmin/daftar-admin');
+    }
+
+    public function ubah_password(Type $var = null)
+    {
+        if(!isset($_POST)) {
+            redirect('superadmin/daftar-admin');
+            exit;
+        }
+
+        $this->user_m->update($this->POST('username'), ['password' => md5($this->POST('password'))]);
+        $this->flashmsg("Berhasil Merubah Password");
+        redirect('superadmin/daftar-admin');
+        exit;
+    }
+
+    public function hapus_admin($username = null)
+    {
+        if($username == null) {
+            redirect('superadmin/daftar-admin');
+            exit;
+        }
+
+        $this->user_m->delete($username);
+        $this->flashmsg("Berhasil Menghapus Akun");
+        redirect('superadmin/daftar-admin');
+        exit;
     }
 
     public function daftar_pemilih($id = 1)

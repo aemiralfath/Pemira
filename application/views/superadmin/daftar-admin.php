@@ -1,7 +1,7 @@
 
         <div class="main-content-inner">
             <div class="row mt-4">
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <div class="card">
                         <div class="card-body">
                             <?= $this->session->flashdata('msg') ?>
@@ -20,7 +20,34 @@
                                             <tr>
                                                 <th scope="row"><?= ++$no ?></th>
                                                 <td><?= $data->username ?></td>
-                                                <td></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-outline-warning mr-3"><i class="fa fa-pencil" data-toggle="modal" data-target="#<?= $data->username ?>"></i></button>
+
+                                                    <div class="modal fade" id="<?= $data->username ?>">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <?= form_open('superadmin/ubah-password') ?>
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Ubah Password</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <input type="hidden" name="username" value="<?= $data->username ?>">
+                                                                        <div class="form-group">
+                                                                            <label for="password" class="col-form-label">Password</label>
+                                                                            <input type="text" name="password" id="password" class="form-control" required>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                                                    </div>
+                                                                <?= form_close() ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="<?= site_url('superadmin/hapus-admin/'.$data->username) ?>" class="btn btn-sm btn-flat btn-outline-danger"><i class="fa fa-trash"></i></a>
+                                                </td>
                                             </tr>
                                             <?php } ?>
                                         </tbody>
@@ -31,7 +58,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Tambah Admin</h4>
