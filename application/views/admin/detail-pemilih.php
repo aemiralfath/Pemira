@@ -48,10 +48,13 @@
                         <div class="card-body">
                             <h4 class="header-title">Generate Code</h4>
                             <div class="input-group mb-3">
-                                <input type="text" id="code" placeholder="Generate Code" class="form-control" aria-label="Text input with dropdown button">
+                                <input type="text" <?php if($kode != null) { echo 'value="'.$kode->kode.'"'; } ?> id="code" placeholder="Generate Code" class="form-control" aria-label="Text input with dropdown button" readonly>
                                 <div class="input-group-append">
-                                    <button id="generateCode" class="btn btn-dark" type="button"><i class="fa fa-qrcode"></i></button>
+                                    <button id="generateCode" class="btn btn-dark" type="button" <?php if($kode != null) { echo 'disabled'; } ?>><i class="fa fa-qrcode"></i></button>
                                 </div>
+                                <?php if($kode != null) { ?>
+                                <smal class="form-text text-muted"><?= "Dibuat pada ".$kode->date_created ?></smal>
+                                <?php } ?>
                             </div>
                             <button id="copyCode" class="btn btn-outline-dark btn-xs w-100">COPY CODE</button>
                         </div>
