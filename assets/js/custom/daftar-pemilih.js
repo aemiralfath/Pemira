@@ -29,5 +29,15 @@ $(document).ready(function() {
         ]
     });
 
+    $('#jurusan').on('change', function() {
+        $('#excel').attr('href', globalUrl+'/ekspor-excel/'+$(this).val()+'/'+$('$angkatan').val());
+        $('#pdf').attr('href', globalUrl+'/ekspor-pdf/'+$(this).val()+'/'+$('$angkatan').val());
+    });
+
+    $('#angkatan').on('change', function() {
+        $('#excel').attr('href', globalUrl+'/ekspor-excel/'+$('#jurusan').val()+'/'+$(this).val());
+        $('#pdf').attr('href', globalUrl+'/ekspor-pdf/'+$('#jurusan').val()+'/'+$(this).val());
+    });
+
     
 });
