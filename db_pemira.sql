@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2020 at 07:27 PM
+-- Generation Time: Nov 08, 2020 at 05:38 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -2863,6 +2863,7 @@ CREATE TABLE `log_pemilihan` (
   `id_log` int(11) NOT NULL,
   `ip_address` text NOT NULL,
   `mac_addres` text NOT NULL,
+  `kode_konfirmasi` text NOT NULL,
   `keterangan` text NOT NULL,
   `waktu` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -2878,6 +2879,14 @@ CREATE TABLE `paslon` (
   `data_paslon` text NOT NULL,
   `foto` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `paslon`
+--
+
+INSERT INTO `paslon` (`id_paslon`, `data_paslon`, `foto`) VALUES
+(0, 'Tanpa Memilih', ''),
+(1, 'sdafasdas', 'dafafaddaf');
 
 -- --------------------------------------------------------
 
@@ -2988,12 +2997,6 @@ ALTER TABLE `log_aktivitas`
 --
 ALTER TABLE `log_pemilihan`
   MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `paslon`
---
-ALTER TABLE `paslon`
-  MODIFY `id_paslon` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
