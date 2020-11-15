@@ -29,11 +29,13 @@ class Superadmin extends MY_Controller {
         $this->load->model('konfirmasi_m');
         $this->load->model('user_m');
         $this->load->model('jurusan_m');
+        $this->load->model('log_m');
         
     }
 
     public function index()
     {
+        $this->log_activity('Mengakses Dashboard Super Admin');
         $this->data['pemilih'] = $this->pemilih_m->get_num_row(['jurusan !=' => 0]);
         $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['paslon_pilihan !=' => 0]);
         $this->data['active'] = 1;
@@ -44,6 +46,7 @@ class Superadmin extends MY_Controller {
 
     public function daftar_admin()
     {
+        $this->log_activity('Mengakses Daftar Admin');
         $this->data['admin'] = $this->user_m->get(['role' => 201]);
         $this->data['active'] = 2;
         $this->data['title'] = 'Super Admin | ';
@@ -53,6 +56,7 @@ class Superadmin extends MY_Controller {
     
     public function tambah_admin()
     {
+        $this->log_activity('Menambah Admin Username : '.$this->POST('Username').' | Password : '.$this->POST('password'));
         $data = [
             'username' => $this->POST('username'),
             'password' => md5($this->POST('password')),
@@ -188,11 +192,32 @@ class Superadmin extends MY_Controller {
         }
     }
 
-    // public function getData()
-    // {
-    //     $d->type = $this->encryption->decrypt($d->type);
-    // }
+    private function log_activity($msg)
+    {
+        $ip = $this->get_ip();
+        $this->log_m->insert(['username' => $this->data['username'], 'ip_address' => $ip, 'keterangan' => $msg, 'waktu' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta'))]);
+    }
 
+    public function get_ip()
+    {
+        $ipaddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP']))
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if(isset($_SERVER['REMOTE_ADDR']))
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = 'UNKNOWN';
+
+        return $ipaddress;
+    }
 }
 
 /* End of file Superadmin.php */
