@@ -121,6 +121,11 @@ class Superadmin extends MY_Controller {
         $this->data['jk'] = ['', 'Laki - laki', 'Perempuan'];
         $this->data['kode'] = $this->konfirmasi_m->get_row(['nim' => $nim]);
         $this->data['pemilih'] = $this->pemilih_m->getDataJoinWhere(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], ['nim' => $nim]);
+        $this->log_activity('Mengakses Detail Pemilih : '.$this->data['pemilih']->nama.' | NIM : '.$nim);
+
+        if($this->data['kode'] != null){
+            $this->data['decrypt'] = $this->encryption->decrypt($this->data['kode']->kode);
+        }
         $this->data['active'] = 3;
         $this->data['title'] = 'Super Admin | ';
         $this->data['content'] = 'detail-pemilih';

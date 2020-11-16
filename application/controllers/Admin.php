@@ -19,10 +19,14 @@ class Admin extends MY_Controller {
 
         $this->load->model('pemilih_m');
         $this->load->model('konfirmasi_m');
+        $this->load->model('user_m');
+        $this->load->model('jurusan_m');
+        $this->load->model('log_m');
     }
     
     public function index()
     {
+        $this->log_activity('Mengakses Dashboard Admin');
         $this->data['pemilih'] = $this->pemilih_m->get_num_row(['jurusan !=' => 0]);
         $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['nim !=' => 0, 'paslon_pilihan !=' => 0]);
         $this->data['active'] = 1;
@@ -33,6 +37,14 @@ class Admin extends MY_Controller {
 
     public function daftar_pemilih($id=1)
     {
+        if($id == 1){
+            $this->log_activity('Mengakses List Belum Memilih');
+        }else{
+            $this->log_activity('Mengakses List Telah Memilih');
+        }
+
+        $this->data['jurusan'] = $this->jurusan_m->get();
+        $this->data['angkatan'] = $this->db->query("SELECT MAX(`angkatan`) AS `maks`, MIN(`angkatan`) as `mins` FROM `daftar_pemilih`")->row();
         $this->data['id'] = $id;
         $this->data['active'] = 2;
         $this->data['title'] = 'Admin | ';
@@ -48,7 +60,13 @@ class Admin extends MY_Controller {
         }
 
         $this->data['jk'] = ['', 'Laki - laki', 'Perempuan'];
+        $this->data['kode'] = $this->konfirmasi_m->get_row(['nim' => $nim]);
         $this->data['pemilih'] = $this->pemilih_m->getDataJoinWhere(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], ['nim' => $nim]);
+        $this->log_activity('Mengakses Detail Pemilih : '.$this->data['pemilih']->nama.' | NIM : '.$nim);
+
+        if($this->data['kode'] != null){
+            $this->data['decrypt'] = $this->encryption->decrypt($this->data['kode']->kode);
+        }
         $this->data['active'] = 3;
         $this->data['title'] = 'Admin | ';
         $this->data['content'] = 'detail-pemilih';
@@ -69,7 +87,8 @@ class Admin extends MY_Controller {
                 'paslon_pilihan' => 0
             );
             $this->konfirmasi_m->insert($data);
-
+            $this->log_activity('Generate Code : '.$this->POST('nim'));
+            
             echo json_encode(array('key' => $key, 'status' => 'success'));
         } else {
             echo json_encode(array('status' => 'gagal'));
@@ -94,9 +113,58 @@ class Admin extends MY_Controller {
         echo json_encode($data);
     }
 
-    public function getData()
+    public function ekspor_excel($jurusan = null, $angkatan = null)
     {
-        $d->type = $this->encryption->decrypt($d->type);
+        $this->log_activity('Ekspor Excel');
+        if(!isset($jurusan, $angkatan)) {
+            redirect('admin/daftar-pemilih');
+            exit;
+        }
+
+        $where = [];
+
+        if($jurusan != 'all') {
+            $where['jurusan'] = $jurusan;
+        }
+
+        if($angkatan != 'all') {
+            $where['angkatan'] = $angkatan;
+        }
+
+        if(count($where) > 0) {
+            $this->data['pemilih'] = $this->pemilih_m->getDataJoin(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], $where);
+        } else {
+            $this->data['pemilih'] = $this->pemilih_m->getDataJoin(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan']);
+        }
+
+        $this->load->view('ekspor-excel', $this->data);
+    }
+
+    private function log_activity($msg)
+    {
+        $ip = $this->get_ip();
+        $this->log_m->insert(['username' => $this->data['username'], 'ip_address' => $ip, 'keterangan' => $msg, 'waktu' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta'))]);
+    }
+
+    public function get_ip()
+    {
+        $ipaddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP']))
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if(isset($_SERVER['REMOTE_ADDR']))
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = 'UNKNOWN';
+
+        return $ipaddress;
     }
 
 }

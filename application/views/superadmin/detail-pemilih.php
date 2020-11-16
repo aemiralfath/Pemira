@@ -48,7 +48,7 @@
                         <div class="card-body">
                             <h4 class="header-title">Generate Code</h4>
                             <div class="input-group mb-3">
-                                <input type="text" <?php if($kode != null) { echo 'value="'.$kode->kode.'"'; } ?> id="code" placeholder="Generate Code" class="form-control" aria-label="Text input with dropdown button" readonly>
+                                <input type="text" <?php if($kode != null) { echo 'value="'.$decrypt.'"'; } ?> id="code" placeholder="Generate Code" class="form-control" aria-label="Text input with dropdown button" readonly>
                                 <div class="input-group-append">
                                     <button id="generateCode" class="btn btn-dark" type="button" <?php if($kode != null) { echo 'disabled'; } ?>><i class="fa fa-qrcode"></i></button>
                                 </div>
