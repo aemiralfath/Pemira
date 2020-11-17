@@ -237,6 +237,10 @@
     <?php if($content == 'detail-pemilih') { ?>
     <script src="<?= base_url("assets/js/custom/detail-pemilih.js") ?>"></script>
     <?php } ?>
+
+    <?php if($content == 'timeline') { ?>
+    <script src="<?= base_url("assets/js/custom/timeline.js") ?>"></script>
+    <?php } ?>
 </body>
 
 </html>

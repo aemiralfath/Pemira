@@ -18,6 +18,7 @@
                                     <li class="<?php if($content == "daftar-pemilih") { if($id == 2) echo "active"; } ?>"><a href="<?= site_url('superadmin/daftar-pemilih/2') ?>">Sudah Memilih</a></li>
                                 </ul>
                             </li>
+                            <li class="<?php if($active == 4) echo "active"; ?>"><a href="<?= site_url('superadmin/timeline') ?>"><i class="ti-map-alt"></i> <span>Timeline</span></a></li>
                         </ul>
                     </nav>
                 </div>

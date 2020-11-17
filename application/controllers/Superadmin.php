@@ -132,6 +132,24 @@ class Superadmin extends MY_Controller {
         $this->load->view('superadmin/template/template', $this->data);
     }
 
+    public function timeline()
+    {
+        $this->load->model('timeline_m');
+        $this->data['timeline'] = $this->timeline_m->get();
+
+        $this->data['active'] = 4;
+        $this->data['title'] = 'Super Admin | ';
+        $this->data['content'] = 'timeline';
+        $this->load->view('superadmin/template/template', $this->data);
+    }
+
+    public function updateTimeline()
+    {
+        $this->load->model('timeline_m');
+        $this->timeline_m->update('timeline',array('status'=>$this->POST('timeline_status')));
+        echo json_encode(array('status' => 'success'));
+    }
+
     public function ekspor_excel($jurusan = null, $angkatan = null)
     {
         if(!isset($jurusan, $angkatan)) {
