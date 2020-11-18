@@ -30,6 +30,8 @@ class Superadmin extends MY_Controller {
         $this->load->model('user_m');
         $this->load->model('jurusan_m');
         $this->load->model('log_m');
+
+        $this->data['activity'] = '';
         
     }
 
@@ -231,6 +233,7 @@ class Superadmin extends MY_Controller {
     {
         $ip = $this->get_ip();
         $this->log_m->insert(['username' => $this->data['username'], 'ip_address' => $ip, 'keterangan' => $msg, 'waktu' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta'))]);
+        $this->data['activity'] = $this->log_m->get_by_order_any_limit('id_log', 'DESC', 10);
     }
 
     public function get_ip()
