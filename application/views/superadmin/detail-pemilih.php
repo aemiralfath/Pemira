@@ -64,7 +64,7 @@
                         <div class="card-body">
                             <h4 class="header-title">Link</h4>
                             <div class="form-group mb-3">
-                                <input type="text" id="link" class="form-control" value="http://127.0.0.1/pemirafrontend/vote/vote/<?= base64_encode($pemilih->nim).'/'.base64_encode($pemilih->nama) ?>" readonly>
+                                <input type="text" id="link" class="form-control" value="localhost/front-pemira/vote/vote/<?= $nim.'/'.$nama ?>" readonly>
                             </div>
                             <button id="copyLink" class="btn btn-outline-dark btn-xs w-100">COPY LINK</button>
                         </div>

@@ -35,7 +35,6 @@ $(document).ready(function() {
     });
     
     $('#jurusan').on('change', function() {
-        console.log('tes');
         $('#excel').attr('href', globalUrl+'/ekspor-excel/'+$(this).val()+'/'+$('#angkatan').val());
         $('#pdf').attr('href', globalUrl+'/ekspor-pdf/'+$(this).val()+'/'+$('#angkatan').val());
     });
