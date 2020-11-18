@@ -75,10 +75,11 @@ class Admin extends MY_Controller {
 
     public function generateCode() {
         if(isset($this->data['username'])) {
+            $this->log_activity($this->data['username'].' Generate Code Untuk NIM : '.$this->POST('nim'));
             $unique = md5(uniqid(rand(), true));
             $key = substr($unique, strlen($unique) - 10, strlen($unique));
             $encrypt_key = $this->encryption->encrypt($key);
-
+            
             $data = array(
                 'nim' => $this->POST('nim'),
                 'kode' => $encrypt_key,
@@ -87,10 +88,10 @@ class Admin extends MY_Controller {
                 'paslon_pilihan' => 0
             );
             $this->konfirmasi_m->insert($data);
-            $this->log_activity('Generate Code : '.$this->POST('nim'));
             
             echo json_encode(array('key' => $key, 'status' => 'success'));
         } else {
+            $this->log_activity('Mencoba Mengakses Generate Code');
             echo json_encode(array('status' => 'gagal'));
         }
     }

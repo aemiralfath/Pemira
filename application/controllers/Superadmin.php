@@ -77,10 +77,13 @@ class Superadmin extends MY_Controller {
     public function ubah_password()
     {
         if(!isset($_POST)) {
+            $this->log_activity('Mengakses URL Tanpa mengisi form | Ubah Password');
             redirect('superadmin/daftar-admin');
             exit;
         }
 
+        $this->log_activity('Mengubah Password Admin | Username : '.$this->POST('Username').' | Password : '.$this->POST('password'));
+        
         $this->user_m->update($this->POST('username'), ['password' => md5($this->POST('password'))]);
         $this->flashmsg("Berhasil Merubah Password");
         redirect('superadmin/daftar-admin');
@@ -90,9 +93,12 @@ class Superadmin extends MY_Controller {
     public function hapus_admin($username = null)
     {
         if($username == null) {
+            $this->log_activity('Mengakses hapus admin tanpa menambahkan username');
             redirect('superadmin/daftar-admin');
             exit;
         }
+
+        $this->log_activity('Menghapus Akun Admin | Username : '.$username);
 
         $this->user_m->delete($username);
         $this->flashmsg("Berhasil Menghapus Akun");
@@ -102,6 +108,8 @@ class Superadmin extends MY_Controller {
 
     public function daftar_pemilih($id = 1)
     {
+        $cond = ['', 'Belum Memilih', 'Sudah Memilih'];
+        $this->log_activity('Mengakses laman daftar pemilih '.$cond[$id]);
         $this->data['jurusan'] = $this->jurusan_m->get();
         $this->data['angkatan'] = $this->db->query("SELECT MAX(`angkatan`) AS `maks`, MIN(`angkatan`) as `mins` FROM `daftar_pemilih`")->row();
         $this->data['id'] = $id;
@@ -114,10 +122,12 @@ class Superadmin extends MY_Controller {
     public function detail_pemilih($nim = null)
     {
         if($nim == null) {
+            $this->log_activity('Mengakses detail pemilih tanpa NIM');
             redirect('superadmin/daftar-pemilih');
             exit;
         }
 
+        $this->log_activity('Mengakses detail pemilih | NIM : '.$nim);
         $this->data['jk'] = ['', 'Laki - laki', 'Perempuan'];
         $this->data['kode'] = $this->konfirmasi_m->get_row(['nim' => $nim]);
         $this->data['pemilih'] = $this->pemilih_m->getDataJoinWhere(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], ['nim' => $nim]);
@@ -196,10 +206,11 @@ class Superadmin extends MY_Controller {
 
     public function generateCode() {
         if(isset($this->data['username'])) {
+            $this->log_activity($this->data['username'].' Generate Code Untuk NIM : '.$this->POST('nim'));
             $unique = md5(uniqid(rand(), true));
             $key = substr($unique, strlen($unique) - 10, strlen($unique));
             $encrypt_key = $this->encryption->encrypt($key);
-
+            
             $data = array(
                 'nim' => $this->POST('nim'),
                 'kode' => $encrypt_key,
@@ -208,9 +219,10 @@ class Superadmin extends MY_Controller {
                 'paslon_pilihan' => 0
             );
             $this->konfirmasi_m->insert($data);
-
+            
             echo json_encode(array('key' => $key, 'status' => 'success'));
         } else {
+            $this->log_activity('Mencoba Mengakses Generate Code');
             echo json_encode(array('status' => 'gagal'));
         }
     }
