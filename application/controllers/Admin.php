@@ -18,6 +18,7 @@ class Admin extends MY_Controller {
         }
 
         $this->load->model('pemilih_m');
+        $this->load->model('timeline_m');
         $this->load->model('konfirmasi_m');
         $this->load->model('user_m');
         $this->load->model('jurusan_m');
@@ -74,7 +75,8 @@ class Admin extends MY_Controller {
     }
 
     public function generateCode() {
-        if(isset($this->data['username'])) {
+        $state = $this->timeline_m->get_row(['timeline'=>'timeline'])->status;
+        if(isset($this->data['username']) and $state == 2) {
             $this->log_activity($this->data['username'].' Generate Code Untuk NIM : '.$this->POST('nim'));
             $unique = md5(uniqid(rand(), true));
             $key = substr($unique, strlen($unique) - 10, strlen($unique));
