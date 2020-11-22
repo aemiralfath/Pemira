@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/pemiraf1/adminsc.pemira-fasilkom.web.id/
+    - /bin/cp -R * $DEPLOYPATH
