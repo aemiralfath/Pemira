@@ -26,6 +26,7 @@
                                 </ul>
                             </li>
                             <li class="<?php if($active == 5) echo "active"; ?>"><a href="<?= site_url('superadmin/timeline') ?>"><i class="ti-map-alt"></i> <span>Timeline</span></a></li>
+                            <?php if($state >= 3): ?><li class="<?php if($active == 6) echo "active"; ?>"><a href="<?= site_url('superadmin/graph') ?>"><i class="ti-bar-chart"></i> <span>Grafik</span></a></li><?php endif ?>
                         </ul>
                     </nav>
                 </div>

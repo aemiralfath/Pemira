@@ -1,7 +1,8 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Superadmin extends MY_Controller {
+class Superadmin extends MY_Controller
+{
 
     public function __construct()
     {
@@ -10,9 +11,8 @@ class Superadmin extends MY_Controller {
         // $this->load->model('user_m');
         $this->data['username'] = $this->session->userdata('username');
         $this->data['id_role']  = $this->session->userdata('id_role');
-        if (isset($this->data['username'], $this->data['id_role']))
-        {
-            if($this->data['id_role'] != 101) {
+        if (isset($this->data['username'], $this->data['id_role'])) {
+            if ($this->data['id_role'] != 101) {
                 $this->session->sess_destroy();
                 $this->flashmsg("Kamu harus login dulu", "warning");
                 redirect('login');
@@ -33,8 +33,8 @@ class Superadmin extends MY_Controller {
         $this->load->model('log_m');
         $this->load->model('log_vote_m');
 
+        $this->data['state'] = $this->timeline_m->get_row(['timeline' => 'timeline'])->status;
         $this->data['activity'] = '';
-        
     }
 
     public function index()
@@ -57,10 +57,10 @@ class Superadmin extends MY_Controller {
         $this->data['content'] = 'daftar-admin';
         $this->load->view('superadmin/template/template', $this->data);
     }
-    
+
     public function tambah_admin()
     {
-        $this->log_activity('Menambah Admin Username : '.$this->POST('Username').' | Password : '.$this->POST('password'));
+        $this->log_activity('Menambah Admin Username : ' . $this->POST('Username') . ' | Password : ' . $this->POST('password'));
         $data = [
             'username' => $this->POST('username'),
             'password' => md5($this->POST('password')),
@@ -69,7 +69,7 @@ class Superadmin extends MY_Controller {
 
         $cek = $this->user_m->insert($data);
 
-        if($cek) {
+        if ($cek) {
             $this->flashmsg('Berhasil Menambah Admin');
         } else {
             $this->flashmsg('Gagal Menambah Admin', 'danger');
@@ -80,14 +80,14 @@ class Superadmin extends MY_Controller {
 
     public function ubah_password()
     {
-        if(!isset($_POST)) {
+        if (!isset($_POST)) {
             $this->log_activity('Mengakses URL Tanpa mengisi form | Ubah Password');
             redirect('superadmin/daftar-admin');
             exit;
         }
 
-        $this->log_activity('Mengubah Password Admin | Username : '.$this->POST('Username').' | Password : '.$this->POST('password'));
-        
+        $this->log_activity('Mengubah Password Admin | Username : ' . $this->POST('Username') . ' | Password : ' . $this->POST('password'));
+
         $this->user_m->update($this->POST('username'), ['password' => md5($this->POST('password'))]);
         $this->flashmsg("Berhasil Merubah Password");
         redirect('superadmin/daftar-admin');
@@ -96,13 +96,13 @@ class Superadmin extends MY_Controller {
 
     public function hapus_admin($username = null)
     {
-        if($username == null) {
+        if ($username == null) {
             $this->log_activity('Mengakses hapus admin tanpa menambahkan username');
             redirect('superadmin/daftar-admin');
             exit;
         }
 
-        $this->log_activity('Menghapus Akun Admin | Username : '.$username);
+        $this->log_activity('Menghapus Akun Admin | Username : ' . $username);
 
         $this->user_m->delete($username);
         $this->flashmsg("Berhasil Menghapus Akun");
@@ -113,7 +113,7 @@ class Superadmin extends MY_Controller {
     public function daftar_pemilih($id = 1)
     {
         $cond = ['', 'Belum Memilih', 'Sudah Memilih'];
-        $this->log_activity('Mengakses laman daftar pemilih '.$cond[$id]);
+        $this->log_activity('Mengakses laman daftar pemilih ' . $cond[$id]);
         $this->data['jurusan'] = $this->jurusan_m->get();
         $this->data['angkatan'] = $this->db->query("SELECT MAX(`angkatan`) AS `maks`, MIN(`angkatan`) as `mins` FROM `daftar_pemilih`")->row();
         $this->data['id'] = $id;
@@ -125,21 +125,21 @@ class Superadmin extends MY_Controller {
 
     public function detail_pemilih($nim = null)
     {
-        if($nim == null) {
+        if ($nim == null) {
             $this->log_activity('Mengakses detail pemilih tanpa NIM');
             redirect('superadmin/daftar-pemilih');
             exit;
         }
 
-        $this->log_activity('Mengakses detail pemilih | NIM : '.$nim);
+        $this->log_activity('Mengakses detail pemilih | NIM : ' . $nim);
         $this->data['jk'] = ['', 'Laki - laki', 'Perempuan'];
         $this->data['kode'] = $this->konfirmasi_m->get_row(['nim' => $nim]);
         $this->data['pemilih'] = $this->pemilih_m->getDataJoinWhere(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], ['nim' => $nim]);
         $this->data['nim'] = $this->baseEncode($this->data['pemilih']->nim);
         $this->data['nama'] = $this->baseEncode($this->data['pemilih']->nama);
-        $this->log_activity('Mengakses Detail Pemilih : '.$this->data['pemilih']->nama.' | NIM : '.$nim);
+        $this->log_activity('Mengakses Detail Pemilih : ' . $this->data['pemilih']->nama . ' | NIM : ' . $nim);
 
-        if($this->data['kode'] != null){
+        if ($this->data['kode'] != null) {
             $this->data['decrypt'] = $this->encryption->decrypt($this->data['kode']->kode);
         }
         $this->data['active'] = 3;
@@ -161,6 +161,8 @@ class Superadmin extends MY_Controller {
 
     public function timeline()
     {
+        $this->log_activity('Mengakses Timeline');
+
         $this->load->model('timeline_m');
         $this->data['timeline'] = $this->timeline_m->get();
 
@@ -170,31 +172,59 @@ class Superadmin extends MY_Controller {
         $this->load->view('superadmin/template/template', $this->data);
     }
 
+    public function graph()
+    {
+        if ($this->data['state'] >= 3) {
+            $this->log_activity('Mengakses Grafik');
+
+            $this->load->model('Konfirmasi_m');
+            $this->load->model('Pemilih_m');
+            $this->load->model('paslon');
+
+            $this->data['maxvote'] = count($this->pemilih_m->get());
+
+            $this->data['count1'] = count($this->konfirmasi_m->get(['paslon_pilihan' => 1]));
+            $this->data['count2'] = count($this->konfirmasi_m->get(['paslon_pilihan' => 2]));
+
+            $this->data['topcount'] = $this->data['count1'] >= $this->data['count2'] ? $this->data['count1'] : $this->data['count2'];
+            $this->data['topcount'] = $this->data['topcount'] > 0 ? $this->data['topcount'] : 1;
+
+            $this->data['paslon'] = $this->paslon->getPaslon();
+
+            $this->data['active'] = 6;
+            $this->data['title'] = 'Super Admin | ';
+            $this->data['content'] = 'grafik';
+            $this->load->view('superadmin/template/template', $this->data);
+        } else {
+            redirect('superadmin/');
+        }
+    }
+
     public function updateTimeline()
     {
         $this->load->model('timeline_m');
-        $this->timeline_m->update('timeline',array('status'=>$this->POST('timeline_status')));
+        $this->timeline_m->update('timeline', array('status' => $this->POST('timeline_status')));
         echo json_encode(array('status' => 'success'));
     }
 
     public function ekspor_excel($jurusan = null, $angkatan = null)
     {
-        if(!isset($jurusan, $angkatan)) {
+        if (!isset($jurusan, $angkatan)) {
             redirect('superadmin/daftar-pemilih');
             exit;
         }
 
         $where = [];
 
-        if($jurusan != 'all') {
+        if ($jurusan != 'all') {
             $where['jurusan'] = $jurusan;
         }
 
-        if($angkatan != 'all') {
+        if ($angkatan != 'all') {
             $where['angkatan'] = $angkatan;
         }
 
-        if(count($where) > 0) {
+        if (count($where) > 0) {
             $this->data['pemilih'] = $this->pemilih_m->getDataJoin(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], $where);
         } else {
             $this->data['pemilih'] = $this->pemilih_m->getDataJoin(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan']);
@@ -239,14 +269,15 @@ class Superadmin extends MY_Controller {
         echo json_encode($data);
     }
 
-    public function generateCode() {
-        $state = $this->timeline_m->get_row(['timeline'=>'timeline'])->status;
-        if(isset($this->data['username']) and $state == 2) {
-            $this->log_activity($this->data['username'].' Generate Code Untuk NIM : '.$this->POST('nim'));
+    public function generateCode()
+    {
+        $state = $this->timeline_m->get_row(['timeline' => 'timeline'])->status;
+        if (isset($this->data['username']) and $state == 2) {
+            $this->log_activity($this->data['username'] . ' Generate Code Untuk NIM : ' . $this->POST('nim'));
             $unique = md5(uniqid(rand(), true));
             $key = substr($unique, strlen($unique) - 10, strlen($unique));
             $encrypt_key = $this->encryption->encrypt($key);
-            
+
             $data = array(
                 'nim' => $this->POST('nim'),
                 'kode' => $encrypt_key,
@@ -255,7 +286,7 @@ class Superadmin extends MY_Controller {
                 'paslon_pilihan' => 0
             );
             $this->konfirmasi_m->insert($data);
-            
+
             echo json_encode(array('key' => $key, 'status' => 'success'));
         } else {
             $this->log_activity('Mencoba Mengakses Generate Code');
@@ -275,15 +306,15 @@ class Superadmin extends MY_Controller {
         $ipaddress = '';
         if (isset($_SERVER['HTTP_CLIENT_IP']))
             $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
             $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        else if(isset($_SERVER['HTTP_X_FORWARDED']))
+        else if (isset($_SERVER['HTTP_X_FORWARDED']))
             $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+        else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
             $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-        else if(isset($_SERVER['HTTP_FORWARDED']))
+        else if (isset($_SERVER['HTTP_FORWARDED']))
             $ipaddress = $_SERVER['HTTP_FORWARDED'];
-        else if(isset($_SERVER['REMOTE_ADDR']))
+        else if (isset($_SERVER['REMOTE_ADDR']))
             $ipaddress = $_SERVER['REMOTE_ADDR'];
         else
             $ipaddress = 'UNKNOWN';
