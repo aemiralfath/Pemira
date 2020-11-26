@@ -64,7 +64,7 @@
                         <div class="card-body">
                             <h4 class="header-title">Link</h4>
                             <div class="form-group mb-3">
-                                <input type="text" id="link" class="form-control" value="localhost/pemirafrontend/vote/vote/<?= $nim.'/'.$nama ?>" readonly>
+                                <input type="text" id="link" class="form-control" value="https://pemira-fasilkom.web.id/vote/vote/<?= $nim.'/'.$nama ?>" readonly>
                             </div>
                             <button id="copyLink" class="btn btn-outline-dark btn-xs w-100">COPY LINK</button>
                         </div>

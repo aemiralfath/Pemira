@@ -31,6 +31,7 @@ class Superadmin extends MY_Controller {
         $this->load->model('user_m');
         $this->load->model('jurusan_m');
         $this->load->model('log_m');
+        $this->load->model('log_vote_m');
 
         $this->data['activity'] = '';
         
@@ -147,12 +148,23 @@ class Superadmin extends MY_Controller {
         $this->load->view('superadmin/template/template', $this->data);
     }
 
+    public function riwayat($id = 1)
+    {
+        $cond = ['', 'Generate Code', 'Vote'];
+        // $this->log_activity('Mengakses laman riwayat '.$cond[$id]);
+        $this->data['id'] = $id;
+        $this->data['active'] = 4;
+        $this->data['title'] = 'Super Admin | ';
+        $this->data['content'] = 'riwayat';
+        $this->load->view('superadmin/template/template', $this->data);
+    }
+
     public function timeline()
     {
         $this->load->model('timeline_m');
         $this->data['timeline'] = $this->timeline_m->get();
 
-        $this->data['active'] = 4;
+        $this->data['active'] = 5;
         $this->data['title'] = 'Super Admin | ';
         $this->data['content'] = 'timeline';
         $this->load->view('superadmin/template/template', $this->data);
@@ -205,6 +217,24 @@ class Superadmin extends MY_Controller {
         $postData = $this->input->post();
 
         $data = $this->pemilih_m->belumMemilih($postData);
+
+        echo json_encode($data);
+    }
+
+    public function logGenerate()
+    {
+        $postData = $this->input->post();
+
+        $data = $this->log_m->getLog($postData);
+
+        echo json_encode($data);
+    }
+
+    public function logVote()
+    {
+        $postData = $this->input->post();
+
+        $data = $this->log_vote_m->getLog($postData);
 
         echo json_encode($data);
     }
