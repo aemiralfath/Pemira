@@ -17,6 +17,13 @@
                                     <li class="<?php if($content == "daftar-pemilih") { if($id == 2) echo "active"; } ?>"><a href="<?= site_url('admin/daftar-pemilih/2') ?>">Sudah Memilih</a></li>
                                 </ul>
                             </li>
+                            <li class="<?php if($active == 4) echo "active"; ?>">
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Riwayat</span></a>
+                                <ul class="collapse">
+                                    <li class="<?php if($content == "riwayat") { if($id == 1) echo "active"; } ?>"><a href="<?= site_url('admin/riwayat') ?>">Generate Code</a></li>
+                                    <li class="<?php if($content == "riwayat") { if($id == 2) echo "active"; } ?>"><a href="<?= site_url('admin/riwayat/2') ?>">Vote</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </nav>
                 </div>
