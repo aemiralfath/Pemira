@@ -28,7 +28,6 @@ class Admin extends MY_Controller {
     
     public function index()
     {
-        $this->log_activity('Mengakses Dashboard Admin');
         $this->data['pemilih'] = $this->pemilih_m->get_num_row(['jurusan !=' => 0]);
         $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['nim !=' => 0, 'paslon_pilihan !=' => 0]);
         $this->data['active'] = 1;
@@ -39,12 +38,8 @@ class Admin extends MY_Controller {
 
     public function daftar_pemilih($id=1)
     {
-        if($id == 1){
-            $this->log_activity('Mengakses List Belum Memilih');
-        }else{
-            $this->log_activity('Mengakses List Telah Memilih');
-        }
-
+        $cond = ['', 'Belum Memilih', 'Sudah Memilih'];
+        $this->log_activity('Mengakses laman daftar pemilih ' . $cond[$id]);
         $this->data['jurusan'] = $this->jurusan_m->get();
         $this->data['angkatan'] = $this->db->query("SELECT MAX(`angkatan`) AS `maks`, MIN(`angkatan`) as `mins` FROM `daftar_pemilih`")->row();
         $this->data['id'] = $id;
@@ -56,11 +51,12 @@ class Admin extends MY_Controller {
 
     public function detail_pemilih($nim=null)
     {
-        if($nim == null) {
+        if ($nim == null) {
+            $this->log_activity('Mengakses detail pemilih tanpa NIM');
             redirect('admin/daftar-pemilih');
             exit;
         }
-
+        
         $this->data['jk'] = ['', 'Laki - laki', 'Perempuan'];
         $this->data['kode'] = $this->konfirmasi_m->get_row(['nim' => $nim]);
         $this->data['pemilih'] = $this->pemilih_m->getDataJoinWhere(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], ['nim' => $nim]);
@@ -78,7 +74,7 @@ class Admin extends MY_Controller {
     public function generateCode() {
         $state = $this->timeline_m->get_row(['timeline'=>'timeline'])->status;
         if(isset($this->data['username']) and $state == 2) {
-            $this->log_activity($this->data['username'].' Generate Code Untuk NIM : '.$this->POST('nim'));
+            $this->log_activity($this->data['username'] . ' Generate Code Untuk NIM : ' . $this->POST('nim'));
             $unique = md5(uniqid(rand(), true));
             $key = substr($unique, strlen($unique) - 10, strlen($unique));
             $encrypt_key = $this->encryption->encrypt($key);
@@ -94,7 +90,7 @@ class Admin extends MY_Controller {
             
             echo json_encode(array('key' => $key, 'status' => 'success'));
         } else {
-            $this->log_activity('Mencoba Mengakses Generate Code');
+            $this->log_activity('Mencoba Mengakses Generate Code '.$this->POST('nim'));
             echo json_encode(array('status' => 'gagal'));
         }
     }
@@ -146,8 +142,6 @@ class Admin extends MY_Controller {
 
     public function riwayat($id = 1)
     {
-        $cond = ['', 'Generate Code', 'Vote'];
-        // $this->log_activity('Mengakses laman riwayat '.$cond[$id]);
         $this->data['id'] = $id;
         $this->data['active'] = 4;
         $this->data['title'] = 'Admin | ';
