@@ -143,6 +143,15 @@
     <script src="<?= base_url("assets/js/custom/daftar-belum-memilih.js") ?>"></script>
     <?php } } ?>
 
+    <?php if($content == "riwayat") { 
+        if($id == 1) {?>
+    
+    <script src="<?= base_url("assets/js/custom/riwayat-generate.js") ?>"></script>
+
+    <?php } else if($id == 2) {?>
+    <script src="<?= base_url("assets/js/custom/riwayat-vote.js") ?>"></script>
+    <?php } } ?>
+
     <?php if($content == 'detail-pemilih') { ?>
     <script src="<?= base_url("assets/js/custom/detail-pemilih.js") ?>"></script>
     <?php } ?>

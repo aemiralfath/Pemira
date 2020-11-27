@@ -18,7 +18,15 @@
                                     <li class="<?php if($content == "daftar-pemilih") { if($id == 2) echo "active"; } ?>"><a href="<?= site_url('superadmin/daftar-pemilih/2') ?>">Sudah Memilih</a></li>
                                 </ul>
                             </li>
-                            <li class="<?php if($active == 4) echo "active"; ?>"><a href="<?= site_url('superadmin/timeline') ?>"><i class="ti-map-alt"></i> <span>Timeline</span></a></li>
+                            <li class="<?php if($active == 4) echo "active"; ?>">
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Riwayat</span></a>
+                                <ul class="collapse">
+                                    <li class="<?php if($content == "riwayat") { if($id == 1) echo "active"; } ?>"><a href="<?= site_url('superadmin/riwayat') ?>">Generate Code</a></li>
+                                    <li class="<?php if($content == "riwayat") { if($id == 2) echo "active"; } ?>"><a href="<?= site_url('superadmin/riwayat/2') ?>">Vote</a></li>
+                                </ul>
+                            </li>
+                            <li class="<?php if($active == 5) echo "active"; ?>"><a href="<?= site_url('superadmin/timeline') ?>"><i class="ti-map-alt"></i> <span>Timeline</span></a></li>
+                            <?php if($state >= 3): ?><li class="<?php if($active == 6) echo "active"; ?>"><a href="<?= site_url('superadmin/graph') ?>"><i class="ti-bar-chart"></i> <span>Grafik</span></a></li><?php endif ?>
                         </ul>
                     </nav>
                 </div>
