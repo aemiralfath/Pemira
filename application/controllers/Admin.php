@@ -24,6 +24,8 @@ class Admin extends MY_Controller {
         $this->load->model('jurusan_m');
         $this->load->model('log_m');
         $this->load->model('log_vote_m');
+
+        $this->data['activity'] = $this->log_m->get_by_order_any_limit('id_log', 'DESC', 10);
     }
     
     public function index()
