@@ -8,7 +8,6 @@ class Superadmin extends MY_Controller
     {
         parent::__construct();
         $this->load->library('session');
-        // $this->load->model('user_m');
         $this->data['username'] = $this->session->userdata('username');
         $this->data['id_role']  = $this->session->userdata('id_role');
         if (isset($this->data['username'], $this->data['id_role'])) {
@@ -39,7 +38,6 @@ class Superadmin extends MY_Controller
 
     public function index()
     {
-        $this->log_activity('Mengakses Dashboard Super Admin');
         $this->data['pemilih'] = $this->pemilih_m->get_num_row(['jurusan !=' => 0]);
         $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['paslon_pilihan !=' => 0]);
         $this->data['active'] = 1;
@@ -150,8 +148,6 @@ class Superadmin extends MY_Controller
 
     public function riwayat($id = 1)
     {
-        $cond = ['', 'Generate Code', 'Vote'];
-        // $this->log_activity('Mengakses laman riwayat '.$cond[$id]);
         $this->data['id'] = $id;
         $this->data['active'] = 4;
         $this->data['title'] = 'Super Admin | ';
@@ -162,7 +158,6 @@ class Superadmin extends MY_Controller
     public function timeline()
     {
         $this->log_activity('Mengakses Timeline');
-
         $this->load->model('timeline_m');
         $this->data['timeline'] = $this->timeline_m->get();
 
@@ -204,6 +199,7 @@ class Superadmin extends MY_Controller
     {
         $this->load->model('timeline_m');
         $this->timeline_m->update('timeline', array('status' => $this->POST('timeline_status')));
+        $this->log_activity('Update Timeline ke '.$this->POST('timeline_status'));
         echo json_encode(array('status' => 'success'));
     }
 
