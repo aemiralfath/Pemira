@@ -65,7 +65,7 @@ class MY_Model extends CI_Model
 
 	public function get_by_order_any_limit($ref, $order, $number, $cond = '')
 	{
-		if (is_array($cond))
+		if (is_array($cond) or strlen($cond) > 0)
 			$this->db->where($cond);
 
 		$this->db->order_by($ref, $order);
