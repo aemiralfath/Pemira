@@ -21,6 +21,9 @@ class Login extends MY_Controller {
                 case 201:
                     redirect('Admin');
                     break;
+                
+                default:
+                    redirect('Logout');
             }
             exit;
         }
