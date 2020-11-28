@@ -36,7 +36,7 @@ class Login extends MY_Controller {
         if($this->POST('username') && $this->POST('password')) {
 
             if($this->user_m->cek_login(array('username' => $this->POST('username'), 'password' => $this->POST('password')))) {
-                $this->log_m->insert(array('ip_address' => $this->get_ip(), 'waktu' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta')), 'username'=>$this->POST('username')));
+                $this->log_m->insert(array('ip_address' => $this->get_ip(), 'keterangan'=>'login', 'waktu' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta')), 'username'=>$this->POST('username')));
                 redirect('login');
                 exit;
             } else { 
