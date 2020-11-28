@@ -80,15 +80,6 @@
                                 <p><?= $num ?> Suara</p>
                             </div>
                         <?php endforeach ?>
-                        <div class="list">
-                            <div class="d-flex flex-row mb-1">
-                                <div class="block" style="background-color: #757575;"></div>
-                                <p class="title ml-2">
-                                    Tidak Memilih
-                                </p>
-                            </div>
-                            <p><?= $maxvote - $count1 - $count2 ?> Suara</p>
-                        </div>
                     </div>
                 </div>
             </div>
