@@ -203,24 +203,29 @@ class Superadmin extends MY_Controller
         echo json_encode(array('status' => 'success'));
     }
 
-    public function ekspor_excel($jurusan = null, $angkatan = null)
+    public function ekspor_excel($jurusan = 'all', $angkatan = 'all', $status = 'all')
     {
-        if (!isset($jurusan, $angkatan)) {
+        $this->log_activity('Ekspor Excel');
+        if(!isset($jurusan, $angkatan, $status)) {
             redirect('superadmin/daftar-pemilih');
             exit;
         }
 
         $where = [];
 
-        if ($jurusan != 'all') {
+        if($jurusan != 'all') {
             $where['jurusan'] = $jurusan;
         }
 
-        if ($angkatan != 'all') {
+        if($angkatan != 'all') {
             $where['angkatan'] = $angkatan;
         }
 
-        if (count($where) > 0) {
+        if($status != 'all') {
+            $where['status'] = $status;
+        }
+
+        if(count($where) > 0) {
             $this->data['pemilih'] = $this->pemilih_m->getDataJoin(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan'], $where);
         } else {
             $this->data['pemilih'] = $this->pemilih_m->getDataJoin(['jurusan'], ['daftar_pemilih.jurusan = jurusan.id_jurusan']);
