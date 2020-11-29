@@ -30,8 +30,8 @@
                         </div>
                         <div class="col-md-3">
                             <div class="row">
-                                <a href="<?= site_url('superadmin/ekspor-excel/all/all') ?>" target="_blank" id="excel" class="btn btn-sm btn-success mr-3">Ekspor Excel</a>
-                                <a href="<?= site_url('superadmin/ekspor-pdf/all/all') ?>" target="_blank" id="pdf" class="btn btn-sm btn-danger">Ekspor PDF</a>
+                                <a href="<?= site_url('superadmin/ekspor-excel/all/all/'.($id - 1)) ?>" target="_blank" id="excel" class="btn btn-sm btn-success mr-3">Ekspor Excel</a>
+                                <a href="<?= site_url('superadmin/ekspor-pdf/all/all/'.($id - 1)) ?>" target="_blank" id="pdf" class="btn btn-sm btn-danger">Ekspor PDF</a>
                             </div>
                         </div>
                     </div>
