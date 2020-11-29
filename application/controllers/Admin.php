@@ -31,7 +31,7 @@ class Admin extends MY_Controller {
     public function index()
     {
         $this->data['pemilih'] = $this->pemilih_m->get_num_row(['jurusan !=' => 0]);
-        $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['nim !=' => 0, 'paslon_pilihan !=' => 0]);
+        $this->data['memilih'] = $this->konfirmasi_m->get_num_row(['nim !=' => 0, 'date_used !=' => null]);
         $this->data['active'] = 1;
         $this->data['title'] = 'Admin | ';
         $this->data['content'] = 'main';
