@@ -268,25 +268,27 @@ class Superadmin extends MY_Controller
     public function generateCode()
     {
         $state = $this->timeline_m->get_row(['timeline' => 'timeline'])->status;
-        if (isset($this->data['username']) and $state == 2) {
-            $this->log_activity($this->data['username'] . ' Generate Code Untuk NIM : ' . $this->POST('nim'));
-            $unique = md5(uniqid(rand(), true));
-            $key = substr($unique, strlen($unique) - 10, strlen($unique));
-            $encrypt_key = $this->encryption->encrypt($key);
+        if(empty($this->konfirmasi_m->get_row(['nim'=>$this->POST('nim')]))){ 
+            if (isset($this->data['username']) and $state == 2) {
+                $this->log_activity($this->data['username'] . ' Generate Code Untuk NIM : ' . $this->POST('nim'));
+                $unique = md5(uniqid(rand(), true));
+                $key = substr($unique, strlen($unique) - 10, strlen($unique));
+                $encrypt_key = $this->encryption->encrypt($key);
 
-            $data = array(
-                'nim' => $this->POST('nim'),
-                'kode' => $encrypt_key,
-                'date_created' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta')),
-                'date_used' => null,
-                'paslon_pilihan' => 0
-            );
-            $this->konfirmasi_m->insert($data);
+                $data = array(
+                    'nim' => $this->POST('nim'),
+                    'kode' => $encrypt_key,
+                    'date_created' => mdate('%Y-%m-%d %H:%i:%s', now('Asia/Jakarta')),
+                    'date_used' => null,
+                    'paslon_pilihan' => 0
+                );
+                $this->konfirmasi_m->insert($data);
 
-            echo json_encode(array('key' => $key, 'status' => 'success'));
-        } else {
-            $this->log_activity('Mencoba Mengakses Generate Code');
-            echo json_encode(array('status' => 'gagal'));
+                echo json_encode(array('key' => $key, 'status' => 'success'));
+            } else {
+                $this->log_activity('Mencoba Mengakses Generate Code');
+                echo json_encode(array('status' => 'gagal'));
+            }
         }
     }
 
