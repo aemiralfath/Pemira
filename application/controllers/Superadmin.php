@@ -176,7 +176,8 @@ class Superadmin extends MY_Controller
             $this->load->model('Pemilih_m');
             $this->load->model('paslon');
 
-            $this->data['maxvote'] = count($this->pemilih_m->get());
+            $this->data['maxvote'] = $this->pemilih_m->get_num_row();
+            $this->data['usedcode'] = $this->konfirmasi_m->get_num_row(['date_used !=' => null]);
 
             $this->data['count1'] = count($this->konfirmasi_m->get(['paslon_pilihan' => 1]));
             $this->data['count2'] = count($this->konfirmasi_m->get(['paslon_pilihan' => 2]));
