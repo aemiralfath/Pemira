@@ -83,9 +83,13 @@ class MY_Model extends CI_Model
 		return $query->row();
 	}
 
-	public function get_num_row($cond)
+	public function get_num_row($cond = '')
 	{
-		$this->db->where($cond);
+		if (is_array($cond))
+			$this->db->where($cond);
+		if (is_string($cond) && strlen($cond) > 3)
+			$this->db->where($cond);
+
 		$query = $this->db->get($this->data['table_name']);
 
 		return $query->num_rows();

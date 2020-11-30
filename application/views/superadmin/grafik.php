@@ -38,14 +38,14 @@
                                                                     break;
                                                                 }
                                                                 if ($calon['nomor'] == 1) {
-                                                                    $totalPercentage += round(($count1 / ($count1 + $count2)) * 100, 2);
+                                                                    $totalPercentage += round(($count1 / ($count1 + $count2 + ($usedcode - $count1 - $count2))) * 100, 2);
                                                                 } else {
-                                                                    $totalPercentage += round(($count2 / ($count1 + $count2)) * 100, 2);
+                                                                    $totalPercentage += round(($count2 / ($count1 + $count2 + ($usedcode - $count1 - $count2))) * 100, 2);
                                                                 }
                                                             ?> <?= '#' . $calon['color'] ?> 0,
                                 <?= '#' . $calon['color'] ?> <?= $totalPercentage . '%' ?>,
-                                <?php endforeach ?> #757575 0,
-                                #757575 100%);
+                                <?php endforeach ?> #9e9e9e 0,
+                                #9e9e9e 100%);
                         background-size: contain;
                         background-position-x: left;
                     }
@@ -60,11 +60,11 @@
                             }
                             if ($calon['nomor'] == 1) {
                                 $percentage = round(($count1 / $topcount) * 100, 2);
-                                $count = round(($count1 / ($count1 + $count2)) * 100, 2);
+                                $count = round(($count1 / ($count1 + $count2 + ($usedcode - $count1 - $count2))) * 100, 2);
                                 $num = $count1;
                             } else {
                                 $percentage = round(($count2 / $topcount) * 100, 2);
-                                $count = round(($count2 / ($count1 + $count2)) * 100, 2);
+                                $count = round(($count2 / ($count1 + $count2 + ($usedcode - $count1 - $count2))) * 100, 2);
                                 $num = $count2;
                             }
 
@@ -80,6 +80,18 @@
                                 <p><?= $num ?> Suara</p>
                             </div>
                         <?php endforeach ?>
+                <div class="list">
+                    <div class="d-flex flex-row mb-1">
+                        <div class="block" style="background-color: #9e9e9e;"></div>
+                        <p class="title ml-2">
+                            Suara Tidak Sah
+                        </p>
+                    </div>
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar" role="progressbar" style="width: <?php $tdksahperc = round((($usedcode - $count1 - $count2) / $topcount) * 100, 2); echo $tdksahperc; ?>%; background-color: #9e9e9e; font-weight: 500;" aria-valuenow="<?= $tdksahperc ?>" aria-valuemin="0" aria-valuemax="100"><?= round((($usedcode - $count1 - $count2) / ($count1 + $count2 + ($usedcode - $count1 - $count2))) * 100, 2) ?>%</div>
+                    </div>
+                    <p><?= $usedcode - $count1 - $count2 ?> Suara</p>
+                </div>
                     </div>
                 </div>
             </div>
@@ -101,13 +113,16 @@
                                                                     break;
                                                                 }
                                                                 if ($calon['nomor'] == 1) {
-                                                                    $totalPercentage += round(($count1 / $maxvote) * 100, 2);
+                                                                    $totalPercentage += round(($count1 / ($maxvote + ($usedcode - $count1 - $count2))) * 100, 2);
                                                                 } else {
-                                                                    $totalPercentage += round(($count2 / $maxvote) * 100, 2);
+                                                                    $totalPercentage += round(($count2 / ($maxvote + ($usedcode - $count1 - $count2))) * 100, 2);
                                                                 }
                                                             ?> <?= '#' . $calon['color'] ?> 0,
                                 <?= '#' . $calon['color'] ?> <?= $totalPercentage . '%' ?>,
-                                <?php endforeach ?> #757575 0,
+                                <?php endforeach ?> 
+                                #9e9e9e 0,
+                                #9e9e9e <?php $totalPercentage += round((($usedcode - $count1 - $count2) / ($maxvote + ($usedcode - $count1 - $count2))) * 100, 2);echo $totalPercentage.'%';?>,
+                                #757575 0,
                                 #757575 100%);
                         background-size: contain;
                         background-position-x: left;
@@ -153,6 +168,18 @@
                                 <div class="progress-bar" role="progressbar" style="width: <?= 100 - $totalPercentage ?>%; background-color: #757575; font-weight: 500;" aria-valuenow="<?= 100 - $totalPercentage ?>" aria-valuemin="0" aria-valuemax="100"><?= 100 - $totalPercentage ?>%</div>
                             </div>
                             <p><?= $maxvote - $count1 - $count2 ?> Suara</p>
+                        </div>
+                        <div class="list">
+                            <div class="d-flex flex-row mb-1">
+                                <div class="block" style="background-color: #9e9e9e;"></div>
+                                <p class="title ml-2">
+                                    Suara Tidak Sah
+                                </p>
+                            </div>
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar" role="progressbar" style="width: <?php $tdksahperc2 = round((($usedcode - $count1 - $count2) / $maxvote) * 100, 2); echo $tdksahperc2; ?>%; background-color: #9e9e9e; font-weight: 500;" aria-valuenow="<?= $tdksahperc2 ?>" aria-valuemin="0" aria-valuemax="100"><?= $tdksahperc2 ?>%</div>
+                            </div>
+                            <p><?= $usedcode - $count1 - $count2 ?> Suara</p>
                         </div>
                     </div>
                 </div>
